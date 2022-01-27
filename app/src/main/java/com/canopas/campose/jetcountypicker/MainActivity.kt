@@ -1,28 +1,28 @@
 package com.canopas.campose.jetcountypicker
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.canopas.campose.countrypicker.CountryField
-import com.canopas.campose.countrypicker.CountryFieldFour
-import com.canopas.campose.countrypicker.CountryFieldNew
-import com.canopas.campose.countrypicker.CountryFieldThree
+import androidx.compose.ui.unit.sp
+import com.canopas.campose.countrypicker.CountryPickerBottomSheet
+import com.canopas.campose.countrypicker.CountryTextField
+import com.canopas.campose.countrypicker.model.Country
 import com.canopas.campose.jetcountypicker.ui.theme.JetCountyPickerTheme
 
 class MainActivity : ComponentActivity() {
@@ -41,17 +41,32 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun SampleCountryPicker() {
-    Column {
         Box {
-            CountryFieldFour(label = "Select country")
+            var expanded by remember { mutableStateOf(false) }
+            var selectedCountry by remember { mutableStateOf<Country?>(null) }
+
+            CountryTextField(label = "Select country", expanded, selectedCountry) {
+                expanded = !expanded
+            }
+
+            CountryPickerBottomSheet(title = {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    text = "Select Country", textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
+            }, expanded, onDismissRequest = {
+                expanded = false
+            }, onItemSelected = {
+                selectedCountry = it
+                expanded = false
+            })
+
         }
 
-        Button(onClick = {
-
-        }) {
-            Text(text = "Click me")
-        }
-    }
 }
 
 @Preview(showBackground = true)
