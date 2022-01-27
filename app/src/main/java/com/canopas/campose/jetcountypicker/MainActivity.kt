@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -30,7 +31,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             JetCountyPickerTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     SampleCountryPicker()
                 }
@@ -41,31 +41,39 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun SampleCountryPicker() {
-        Box {
-            var expanded by remember { mutableStateOf(false) }
-            var selectedCountry by remember { mutableStateOf<Country?>(null) }
+    Box {
+        var expanded by remember { mutableStateOf(false) }
+        var selectedCountry by remember { mutableStateOf<Country?>(null) }
 
-            CountryTextField(label = "Select country", expanded, selectedCountry) {
+        CountryPickerBottomSheet(title = {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                text = "Select Country", textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            )
+        }, expanded, onDismissRequest = {
+            expanded = false
+        }, onItemSelected = {
+            selectedCountry = it
+            expanded = false
+        }) {
+            CountryTextField(
+                label = "Select country",
+                modifier = Modifier
+                    .padding(top = 50.dp)
+                    .align(Alignment.TopCenter),
+                expanded,
+                selectedCountry
+            ) {
                 expanded = !expanded
             }
 
-            CountryPickerBottomSheet(title = {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    text = "Select Country", textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-                )
-            }, expanded, onDismissRequest = {
-                expanded = false
-            }, onItemSelected = {
-                selectedCountry = it
-                expanded = false
-            })
-
         }
+
+    }
 
 }
 

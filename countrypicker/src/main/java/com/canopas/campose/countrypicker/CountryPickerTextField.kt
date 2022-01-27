@@ -1,8 +1,6 @@
 package com.canopas.campose.countrypicker
 
 import androidx.compose.foundation.gestures.forEachGesture
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -26,38 +24,34 @@ import kotlinx.coroutines.coroutineScope
 @Composable
 fun CountryTextField(
     label: String = "",
+    modifier: Modifier,
     expanded: Boolean = false,
     selectedCountry: Country? = null,
     colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(),
     onExpandedChange: () -> Unit,
 ) {
 
-    Box(
-        modifier = Modifier
-            .wrapContentSize()
-            .expandable(menuLabel = label, onExpandedChange = onExpandedChange)
-
-    ) {
-        OutlinedTextField(
-            readOnly = true,
-            label = { Text(label) },
-            value = if (selectedCountry == null) "" else "${selectedCountry.dial_code} ${selectedCountry.name}",
-            onValueChange = {},
-            colors = colors,
-            trailingIcon = {
-                Icon(
-                    Icons.Filled.ArrowDropDown,
-                    null,
-                    Modifier.rotate(
-                        if (expanded)
-                            180f
-                        else
-                            360f
-                    )
+    OutlinedTextField(
+        modifier = modifier
+            .expandable(menuLabel = label, onExpandedChange = onExpandedChange),
+        readOnly = true,
+        label = { Text(label) },
+        value = if (selectedCountry == null) "" else "${selectedCountry.dial_code} ${selectedCountry.name}",
+        onValueChange = {},
+        colors = colors,
+        trailingIcon = {
+            Icon(
+                Icons.Filled.ArrowDropDown,
+                null,
+                Modifier.rotate(
+                    if (expanded)
+                        180f
+                    else
+                        0f
                 )
-            }
-        )
-    }
+            )
+        }
+    )
 }
 
 @Composable

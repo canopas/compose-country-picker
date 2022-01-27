@@ -33,6 +33,7 @@ fun CountryPickerBottomSheet(
     show: Boolean,
     onItemSelected: (country: Country) -> Unit,
     onDismissRequest: () -> Unit,
+    content: @Composable () -> Unit
 ) {
     val context = LocalContext.current
     val countries = remember { countryList(context) }
@@ -90,6 +91,6 @@ fun CountryPickerBottomSheet(
 
         }
     ) {
-
+        content()
     }
 }
