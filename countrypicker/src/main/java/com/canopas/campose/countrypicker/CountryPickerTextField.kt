@@ -2,6 +2,7 @@ package com.canopas.campose.countrypicker
 
 import androidx.compose.foundation.gestures.forEachGesture
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldColors
@@ -11,6 +12,7 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.changedToUp
@@ -25,6 +27,7 @@ import kotlinx.coroutines.coroutineScope
 fun CountryTextField(
     label: String = "",
     modifier: Modifier,
+    shape: Shape = MaterialTheme.shapes.small,
     expanded: Boolean = false,
     selectedCountry: Country? = null,
     colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(),
@@ -39,6 +42,7 @@ fun CountryTextField(
         value = if (selectedCountry == null) "" else "${selectedCountry.dial_code} ${selectedCountry.name}",
         onValueChange = {},
         colors = colors,
+        shape = shape,
         trailingIcon = {
             Icon(
                 Icons.Filled.ArrowDropDown,

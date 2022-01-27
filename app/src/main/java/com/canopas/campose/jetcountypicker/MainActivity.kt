@@ -65,8 +65,8 @@ fun SampleCountryPicker() {
                 modifier = Modifier
                     .padding(top = 50.dp)
                     .align(Alignment.TopCenter),
-                expanded,
-                selectedCountry
+                expanded = expanded,
+                selectedCountry = selectedCountry
             ) {
                 expanded = !expanded
             }
