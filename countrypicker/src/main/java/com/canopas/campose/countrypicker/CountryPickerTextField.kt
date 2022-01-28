@@ -26,6 +26,7 @@ import kotlinx.coroutines.coroutineScope
 @Composable
 fun CountryTextField(
     label: String = "",
+    isError: Boolean = false,
     modifier: Modifier,
     shape: Shape = MaterialTheme.shapes.small,
     expanded: Boolean = false,
@@ -38,6 +39,7 @@ fun CountryTextField(
         modifier = modifier
             .expandable(menuLabel = label, onExpandedChange = onExpandedChange),
         readOnly = true,
+        isError = isError,
         label = { Text(label) },
         value = if (selectedCountry == null) "" else "${selectedCountry.dial_code} ${selectedCountry.name}",
         onValueChange = {},

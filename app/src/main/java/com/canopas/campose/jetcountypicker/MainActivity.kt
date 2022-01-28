@@ -70,11 +70,8 @@ fun SampleCountryPicker() {
             ) {
                 expanded = !expanded
             }
-
         }
-
     }
-
 }
 
 @Preview(showBackground = true)
