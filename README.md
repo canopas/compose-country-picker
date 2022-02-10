@@ -7,19 +7,19 @@ Country code bottomsheet picker in Jetpack Compose
 ## How to add in your project
 
 Add it in your root build.gradle at the end of repositories:
-```
+```gradle
 repositories {
     maven { url 'https://jitpack.io' }
 }
   ```
   
 Add the dependency
-```
+```gradle
  implementation 'com.github.canopas:JetCountrypicker:1.0.1'
 ```
 
 ## How to use ?
-```
+```kotlin
     Box {
         var expanded by remember { mutableStateOf(false) }
         var selectedCountry by remember { mutableStateOf<Country?>(null) }
