@@ -50,6 +50,9 @@ Add the dependency
     }
 ```
 
+# Demo
+[Sample](https://github.com/canopas/JetCountrypicker/tree/main/app) app demonstrates how simple the usage of the library actually is.
+
 # Bugs and Feedback
 For bugs, questions and discussions please use the [Github Issues](https://github.com/canopas/JetCountrypicker/issues).
 
