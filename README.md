@@ -6,16 +6,11 @@ Country code bottomsheet picker in Jetpack Compose
 
 ## How to add in your project
 
-Add it in your root build.gradle at the end of repositories:
-```gradle
-repositories {
-    maven { url 'https://jitpack.io' }
-}
-  ```
+Available on [Maven Central](https://repo1.maven.org/maven2/com/canopas/jetcountrypicker/jetcountrypicker/).
   
 Add the dependency
 ```gradle
- implementation 'com.github.canopas:JetCountrypicker:1.0.1'
+ implementation 'com.canopas.jetcountrypicker:jetcountrypicker:1.0.0'
 ```
 
 ## How to use ?
