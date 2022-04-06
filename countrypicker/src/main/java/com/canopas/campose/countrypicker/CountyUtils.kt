@@ -28,3 +28,13 @@ fun getJsonDataFromAsset(context: Context, fileName: String): String? {
     }
     return jsonString
 }
+
+fun List<Country>.searchCountryList(countryName: String): MutableList<Country> {
+    val countryList = mutableListOf<Country>()
+    this.forEach {
+        if (it.name.lowercase().contains(countryName.lowercase())) {
+            countryList.add(it)
+        }
+    }
+    return countryList
+}

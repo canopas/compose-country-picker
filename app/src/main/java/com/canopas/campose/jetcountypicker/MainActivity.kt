@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,24 +45,33 @@ fun SampleCountryPicker() {
     Box {
         var expanded by remember { mutableStateOf(false) }
         var selectedCountry by remember { mutableStateOf<Country?>(null) }
+        val focusManager = LocalFocusManager.current
 
-        CountryPickerBottomSheet(title = {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                text = "Select Country", textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
-            )
-        }, expanded, onDismissRequest = {
-            expanded = false
-        }, onItemSelected = {
-            selectedCountry = it
-            expanded = false
-        }) {
+        CountryPickerBottomSheet(
+            title = {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    text = "Select Country", textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
+            },
+            expanded,
+            onDismissRequest = {
+                expanded = false
+            },
+            onItemSelected = {
+                selectedCountry = it
+                expanded = false
+                focusManager.clearFocus()
+            },
+            dialogSearch = true,
+        ) {
             CountryTextField(
                 label = "Select country",
+                placeholder = { Text(text = "+91 India") },
                 modifier = Modifier
                     .padding(top = 50.dp)
                     .align(Alignment.TopCenter),
