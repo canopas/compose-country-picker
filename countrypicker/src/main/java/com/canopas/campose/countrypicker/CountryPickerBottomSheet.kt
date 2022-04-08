@@ -66,7 +66,7 @@ fun CountryPickerBottomSheet(
 
             Column {
                 if (dialogSearch) {
-                    searchValue = countrySearchView()
+                    searchValue = countrySearchView(modalBottomSheetState)
                 }
                 LazyColumn(
                     contentPadding = PaddingValues(16.dp)

@@ -15,8 +15,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun countrySearchView(): String {
+fun countrySearchView(state: ModalBottomSheetState): String {
 
     var searchValue: String by rememberSaveable { mutableStateOf("") }
     var showClearIcon by rememberSaveable { mutableStateOf(false) }
@@ -25,6 +26,10 @@ fun countrySearchView(): String {
         showClearIcon = false
     } else if (searchValue.isNotEmpty()) {
         showClearIcon = true
+    }
+
+    if (!state.isVisible){
+        searchValue = ""
     }
 
     Row {
@@ -89,8 +94,9 @@ fun countrySearchView(): String {
 }
 
 
+@OptIn(ExperimentalMaterialApi::class)
 @Preview(showBackground = true)
 @Composable
 fun PreviewSearchView() {
-    countrySearchView()
+    countrySearchView(rememberModalBottomSheetState(ModalBottomSheetValue.Hidden))
 }
