@@ -17,6 +17,7 @@ import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.changedToUp
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
@@ -26,15 +27,16 @@ import kotlinx.coroutines.coroutineScope
 @Composable
 fun CountryTextField(
     label: String = "",
-    placeholder: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
     modifier: Modifier,
     shape: Shape = MaterialTheme.shapes.small,
     expanded: Boolean = false,
     selectedCountry: Country? = null,
+    defaultSelectedCountry: Country = countryList(LocalContext.current).first(),
     colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(),
     onExpandedChange: () -> Unit,
 ) {
+    val countryValue = "${defaultSelectedCountry.dial_code} ${defaultSelectedCountry.name}"
 
     OutlinedTextField(
         modifier = modifier
@@ -42,8 +44,7 @@ fun CountryTextField(
         readOnly = true,
         isError = isError,
         label = { Text(label) },
-        placeholder = placeholder,
-        value = if (selectedCountry == null) "" else "${selectedCountry.dial_code} ${selectedCountry.name}",
+        value = if (selectedCountry == null) countryValue else "${selectedCountry.dial_code} ${selectedCountry.name}",
         onValueChange = {},
         colors = colors,
         shape = shape,

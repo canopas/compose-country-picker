@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,7 +17,16 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun countrySearchView(): String {
-    var searchValue by remember { mutableStateOf("") }
+
+    var searchValue: String by rememberSaveable { mutableStateOf("") }
+    var showClearIcon by rememberSaveable { mutableStateOf(false) }
+
+    if (searchValue.isEmpty()) {
+        showClearIcon = false
+    } else if (searchValue.isNotEmpty()) {
+        showClearIcon = true
+    }
+
     Row {
         Box(
             modifier = Modifier
@@ -42,6 +53,19 @@ fun countrySearchView(): String {
                         tint = Color.Black.copy(0.2f)
                     )
                 },
+                trailingIcon = {
+                    if (showClearIcon) {
+                        IconButton(onClick = {
+                            searchValue = ""
+                        }) {
+                            Icon(
+                                imageVector = Icons.Rounded.Clear,
+                                tint = MaterialTheme.colors.onBackground,
+                                contentDescription = "Clear icon"
+                            )
+                        }
+                    }
+                },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
@@ -67,6 +91,6 @@ fun countrySearchView(): String {
 
 @Preview(showBackground = true)
 @Composable
-fun SearchViewPreview() {
+fun PreviewSearchView() {
     countrySearchView()
 }
