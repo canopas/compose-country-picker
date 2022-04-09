@@ -2,7 +2,7 @@
 
 Country code bottomsheet picker in Jetpack Compose
 
-<img src="https://github.com/canopas/Country-picker-example/blob/main/gif/Peek%202022-01-27%2015-11.gif" height="540" />
+<img src="https://canopas.slack.com/files/U01DKCU11PW/F03AWSNNBK6/peek_2022-04-09_12-36.gif" height="540" />
 
 ## How to add in your project
 
