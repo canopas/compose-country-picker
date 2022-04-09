@@ -81,18 +81,18 @@ fun CountryPickerBottomSheet(
                                 selectedCountry = country
                                 onItemSelected(selectedCountry)
                             }
-                            .padding(10.dp)) {
+                            .padding(12.dp)) {
                             Text(text = localeToEmoji(country.code))
                             Text(
                                 text = country.name,
                                 modifier = Modifier
-                                    .padding(start = 6.dp)
+                                    .padding(start = 8.dp)
                                     .weight(2f)
                             )
                             Text(
                                 text = country.dial_code,
                                 modifier = Modifier
-                                    .padding(start = 6.dp)
+                                    .padding(start = 8.dp)
                             )
                         }
                         Divider(
