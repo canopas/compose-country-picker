@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,7 +56,7 @@ fun SampleCountryPicker() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    text = "Select Country", textAlign = TextAlign.Center,
+                    text = stringResource(R.string.select_country_text), textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp
                 )
@@ -71,7 +72,7 @@ fun SampleCountryPicker() {
             }
         ) {
             CountryTextField(
-                label = "Select country",
+                label = stringResource(R.string.select_country_text),
                 modifier = Modifier
                     .padding(top = 50.dp)
                     .align(Alignment.TopCenter),
