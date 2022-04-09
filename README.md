@@ -1,6 +1,6 @@
 # JetCountryPicker
 
-Country code bottomsheet picker in Jetpack Compose
+Country code bottomsheet picker in Jetpack Compose with Search functionality.
 
 <img src="https://github.com/canopas/JetCountrypicker/blob/main/gif/Peek%202022-04-09%2012-36.gif" />
 
