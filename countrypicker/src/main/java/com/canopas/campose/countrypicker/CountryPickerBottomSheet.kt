@@ -2,6 +2,7 @@ package com.canopas.campose.countrypicker
 
 import android.util.Log
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -38,6 +39,7 @@ fun CountryPickerBottomSheet(
     val context = LocalContext.current
     val countries = remember { countryList(context) }
     var selectedCountry by remember { mutableStateOf(countries[0]) }
+    var searchValue by remember { mutableStateOf("") }
 
     val modalBottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden
@@ -60,32 +62,43 @@ fun CountryPickerBottomSheet(
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         sheetContent = {
             title()
-            LazyColumn(
-                contentPadding = PaddingValues(16.dp)
-            ) {
-                items(countries) { country ->
-                    Row(modifier = Modifier
-                        .clickable {
-                            selectedCountry = country
-                            onItemSelected(selectedCountry)
+
+            Column {
+                searchValue = countrySearchView(modalBottomSheetState)
+
+                LazyColumn(
+                    contentPadding = PaddingValues(16.dp)
+                ) {
+                    items(
+                        if (searchValue.isEmpty()) {
+                            countries
+                        } else {
+                            countries.searchCountryList(searchValue)
                         }
-                        .padding(10.dp)) {
-                        Text(text = localeToEmoji(country.code))
-                        Text(
-                            text = country.name,
-                            modifier = Modifier
-                                .padding(start = 6.dp)
-                                .weight(2f)
-                        )
-                        Text(
-                            text = country.dial_code,
-                            modifier = Modifier
-                                .padding(start = 6.dp)
+                    ) { country ->
+                        Row(modifier = Modifier
+                            .clickable {
+                                selectedCountry = country
+                                onItemSelected(selectedCountry)
+                            }
+                            .padding(12.dp)) {
+                            Text(text = localeToEmoji(country.code))
+                            Text(
+                                text = country.name,
+                                modifier = Modifier
+                                    .padding(start = 8.dp)
+                                    .weight(2f)
+                            )
+                            Text(
+                                text = country.dial_code,
+                                modifier = Modifier
+                                    .padding(start = 8.dp)
+                            )
+                        }
+                        Divider(
+                            color = Color.LightGray, thickness = 0.5.dp
                         )
                     }
-                    Divider(
-                        color = Color.LightGray, thickness = 0.5.dp
-                    )
                 }
             }
 
