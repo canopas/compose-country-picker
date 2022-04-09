@@ -68,8 +68,7 @@ fun SampleCountryPicker() {
                 selectedCountry = it
                 expanded = false
                 focusManager.clearFocus()
-            },
-            dialogSearch = true
+            }
         ) {
             CountryTextField(
                 label = "Select country",

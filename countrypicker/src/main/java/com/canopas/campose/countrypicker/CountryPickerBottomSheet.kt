@@ -34,7 +34,6 @@ fun CountryPickerBottomSheet(
     show: Boolean,
     onItemSelected: (country: Country) -> Unit,
     onDismissRequest: () -> Unit,
-    dialogSearch: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val context = LocalContext.current
@@ -65,9 +64,8 @@ fun CountryPickerBottomSheet(
             title()
 
             Column {
-                if (dialogSearch) {
-                    searchValue = countrySearchView(modalBottomSheetState)
-                }
+                searchValue = countrySearchView(modalBottomSheetState)
+
                 LazyColumn(
                     contentPadding = PaddingValues(16.dp)
                 ) {

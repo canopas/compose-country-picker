@@ -22,13 +22,9 @@ fun countrySearchView(state: ModalBottomSheetState): String {
     var searchValue: String by rememberSaveable { mutableStateOf("") }
     var showClearIcon by rememberSaveable { mutableStateOf(false) }
 
-    if (searchValue.isEmpty()) {
-        showClearIcon = false
-    } else if (searchValue.isNotEmpty()) {
-        showClearIcon = true
-    }
+    showClearIcon = searchValue.isNotEmpty()
 
-    if (!state.isVisible){
+    if (!state.isVisible) {
         searchValue = ""
     }
 
