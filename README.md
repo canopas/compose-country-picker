@@ -10,7 +10,7 @@ Available on [Maven Central](https://repo1.maven.org/maven2/com/canopas/jetcount
   
 Add the dependency
 ```gradle
- implementation 'com.canopas.jetcountrypicker:jetcountrypicker:1.0.0'
+ implementation 'com.canopas.jetcountrypicker:jetcountrypicker:1.0.3'
 ```
 
 ## How to use ?
@@ -18,6 +18,7 @@ Add the dependency
     Box {
         var expanded by remember { mutableStateOf(false) }
         var selectedCountry by remember { mutableStateOf<Country?>(null) }
+        val focusManager = LocalFocusManager.current
 
         CountryPickerBottomSheet(title = {
             Text(
@@ -33,6 +34,7 @@ Add the dependency
         }, onItemSelected = {
             selectedCountry = it
             expanded = false
+            focusManager.clearFocus()
         }) {
             CountryTextField(
                 label = "Select country",
@@ -40,6 +42,7 @@ Add the dependency
                     .padding(top = 50.dp)
                     .align(Alignment.TopCenter),
                 expanded,
+                defaultSelectedCountry = countryList(LocalContext.current).single { it.code == "IN" },
                 selectedCountry
             ) {
                 expanded = !expanded
