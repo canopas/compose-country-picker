@@ -2,16 +2,22 @@ package com.canopas.campose.countrypicker
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.rounded.Clear
+import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,6 +28,7 @@ fun countrySearchView(state: ModalBottomSheetState): String {
 
     var searchValue: String by rememberSaveable { mutableStateOf("") }
     var showClearIcon by rememberSaveable { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
 
     showClearIcon = searchValue.isNotEmpty()
 
@@ -32,14 +39,16 @@ fun countrySearchView(state: ModalBottomSheetState): String {
     Row {
         Box(
             modifier = Modifier
-                .background(
-                    color = Color.White.copy(alpha = 0.1f)
-                )
+                .padding(start = 20.dp, end = 20.dp)
         ) {
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp),
+                    .height(48.dp)
+                    .background(
+                        Color.LightGray.copy(0.6f),
+                        shape = RoundedCornerShape(10.dp)
+                    ),
                 value = searchValue,
                 onValueChange = {
                     searchValue = it
@@ -52,7 +61,7 @@ fun countrySearchView(state: ModalBottomSheetState): String {
                     Icon(
                         Icons.Default.Search,
                         contentDescription = null,
-                        tint = Color.Black.copy(0.2f)
+                        tint = Color.Black.copy(0.3f)
                     )
                 },
                 trailingIcon = {
@@ -61,8 +70,8 @@ fun countrySearchView(state: ModalBottomSheetState): String {
                             searchValue = ""
                         }) {
                             Icon(
-                                imageVector = Icons.Rounded.Clear,
-                                tint = MaterialTheme.colors.onBackground,
+                                imageVector = Icons.Rounded.Cancel,
+                                tint = Color.Black.copy(0.3f),
                                 contentDescription = "Clear icon"
                             )
                         }
@@ -71,9 +80,14 @@ fun countrySearchView(state: ModalBottomSheetState): String {
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                )
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent
+                ),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Search
+                ),
+                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
             )
             if (searchValue.isEmpty()) {
                 Text(
@@ -92,8 +106,10 @@ fun countrySearchView(state: ModalBottomSheetState): String {
 
 
 @OptIn(ExperimentalMaterialApi::class)
-@Preview(showBackground = true)
+@Preview()
 @Composable
 fun PreviewSearchView() {
-    countrySearchView(rememberModalBottomSheetState(ModalBottomSheetValue.Hidden))
+    countrySearchView(
+        rememberModalBottomSheetState(ModalBottomSheetValue.Expanded)
+    )
 }
