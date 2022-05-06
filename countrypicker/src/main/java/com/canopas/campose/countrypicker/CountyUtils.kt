@@ -33,7 +33,7 @@ fun List<Country>.searchCountryList(countryName: String): MutableList<Country> {
     val countryList = mutableListOf<Country>()
     this.forEach {
         if (it.name.lowercase().contains(countryName.lowercase()) ||
-            it.dial_code.lowercase().contains(countryName.lowercase())
+            it.dial_code.contains(countryName.lowercase())
         ) {
             countryList.add(it)
         }
