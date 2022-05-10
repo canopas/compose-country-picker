@@ -44,7 +44,7 @@ fun countrySearchView(state: ModalBottomSheetState): String {
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp)
+                    .height(52.dp)
                     .background(
                         Color.LightGray.copy(0.6f),
                         shape = RoundedCornerShape(10.dp)
@@ -87,13 +87,14 @@ fun countrySearchView(state: ModalBottomSheetState): String {
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Search
                 ),
-                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
+                keyboardActions = KeyboardActions(onSearch = { focusManager.clearFocus() })
             )
             if (searchValue.isEmpty()) {
                 Text(
                     text = stringResource(R.string.search_text),
                     style = MaterialTheme.typography.body1,
                     color = Color.Gray,
+                    fontSize = 16.sp,
                     modifier = Modifier
                         .align(Alignment.CenterStart)
                         .padding(start = 52.dp)
@@ -106,7 +107,7 @@ fun countrySearchView(state: ModalBottomSheetState): String {
 
 
 @OptIn(ExperimentalMaterialApi::class)
-@Preview()
+@Preview
 @Composable
 fun PreviewSearchView() {
     countrySearchView(
