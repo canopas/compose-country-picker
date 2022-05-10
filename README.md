@@ -10,7 +10,7 @@ Available on [Maven Central](https://repo1.maven.org/maven2/com/canopas/jetcount
   
 Add the dependency
 ```gradle
- implementation 'com.canopas.jetcountrypicker:jetcountrypicker:1.0.3'
+ implementation 'com.canopas.jetcountrypicker:jetcountrypicker:1.0.4'
 ```
 
 ## How to use ?
