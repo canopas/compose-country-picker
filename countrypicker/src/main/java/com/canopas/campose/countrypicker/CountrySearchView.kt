@@ -1,17 +1,25 @@
 package com.canopas.campose.countrypicker
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.rounded.Cancel
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
@@ -22,52 +30,42 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun countrySearchView(state: ModalBottomSheetState): String {
+fun CountrySearchView(searchValue: String, onSearch: (searchValue: String) -> Unit) {
 
-    var searchValue: String by rememberSaveable { mutableStateOf("") }
-    var showClearIcon by rememberSaveable { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
-
-    showClearIcon = searchValue.isNotEmpty()
-
-    if (!state.isVisible) {
-        searchValue = ""
-    }
 
     Row {
         Box(
-            modifier = Modifier
-                .padding(start = 20.dp, end = 20.dp)
+            modifier = Modifier.padding(start = 20.dp, end = 20.dp)
         ) {
-            TextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(52.dp)
-                    .background(
-                        Color.LightGray.copy(0.6f),
-                        shape = RoundedCornerShape(10.dp)
-                    ),
-                value = searchValue,
-                onValueChange = {
-                    searchValue = it
-                },
-                textStyle = LocalTextStyle.current.copy(
-                    fontSize = 14.sp
-                ),
-                singleLine = true,
+            TextField(modifier = Modifier
+                .fillMaxWidth()
+                .height(52.dp)
+                .background(
+                    Color.LightGray.copy(0.6f), shape = RoundedCornerShape(10.dp)
+                ), value = searchValue, onValueChange = {
+                onSearch(it)
+            }, textStyle = LocalTextStyle.current.copy(
+                fontSize = 14.sp
+            ), placeholder = {
+                Text(
+                    text = stringResource(R.string.search_text),
+                    style = MaterialTheme.typography.body1,
+                    color = Color.Gray,
+                    fontSize = 16.sp,
+                )
+            }, singleLine = true,
                 leadingIcon = {
                     Icon(
                         Icons.Default.Search,
                         contentDescription = null,
                         tint = Color.Black.copy(0.3f)
                     )
-                },
-                trailingIcon = {
-                    if (showClearIcon) {
+                }, trailingIcon = {
+                    if (searchValue.isNotEmpty()) {
                         IconButton(onClick = {
-                            searchValue = ""
+                            onSearch("")
                         }) {
                             Icon(
                                 imageVector = Icons.Rounded.Cancel,
@@ -76,41 +74,24 @@ fun countrySearchView(state: ModalBottomSheetState): String {
                             )
                         }
                     }
-                },
-                colors = TextFieldDefaults.textFieldColors(
+                }, colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent
-                ),
-                keyboardOptions = KeyboardOptions(
+                ), keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Search
-                ),
-                keyboardActions = KeyboardActions(onSearch = { focusManager.clearFocus() })
+                    imeAction = ImeAction.Done
+                ), keyboardActions = KeyboardActions(onDone = {
+                    focusManager.clearFocus()
+                })
             )
-            if (searchValue.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.search_text),
-                    style = MaterialTheme.typography.body1,
-                    color = Color.Gray,
-                    fontSize = 16.sp,
-                    modifier = Modifier
-                        .align(Alignment.CenterStart)
-                        .padding(start = 52.dp)
-                )
-            }
         }
     }
-    return searchValue
 }
 
-
-@OptIn(ExperimentalMaterialApi::class)
 @Preview
 @Composable
 fun PreviewSearchView() {
-    countrySearchView(
-        rememberModalBottomSheetState(ModalBottomSheetValue.Expanded)
-    )
+    CountrySearchView("search", {})
 }
