@@ -1,6 +1,6 @@
 # JetCountryPicker
 
-Country code bottomsheet picker in Jetpack Compose with Search functionality.
+Country code bottom sheet picker in Jetpack Compose with Search functionality.
 
 <img src="https://github.com/canopas/JetCountrypicker/blob/main/gif/Peek%202022-04-11%2011-46.gif" />
 
@@ -10,47 +10,46 @@ Available on [Maven Central](https://repo1.maven.org/maven2/com/canopas/jetcount
   
 Add the dependency
 ```gradle
- implementation 'com.canopas.jetcountrypicker:jetcountrypicker:1.0.4'
+ implementation 'com.canopas.jetcountrypicker:jetcountrypicker:1.0.5'
 ```
 
 ## How to use ?
-```kotlin
-    Box {
-        var expanded by remember { mutableStateOf(false) }
-        var selectedCountry by remember { mutableStateOf<Country?>(null) }
-        val focusManager = LocalFocusManager.current
 
-        CountryPickerBottomSheet(title = {
+```kotlin
+  Box {
+    var selectedCountry by remember { mutableStateOf<Country?>(null) }
+    val modalBottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden
+    )
+
+    CountryPickerBottomSheet(
+        sheetState = modalBottomSheetState,
+        bottomSheetTitle = {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                text = "Select Country", textAlign = TextAlign.Center,
+                text = stringResource(R.string.select_country_text),
+                textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp
             )
-        }, expanded, onDismissRequest = {
-            expanded = false
-        }, onItemSelected = {
+        },
+        onItemSelected = {
             selectedCountry = it
-            expanded = false
-            focusManager.clearFocus()
-        }) {
-            CountryTextField(
-                label = "Select country",
-                modifier = Modifier
-                    .padding(top = 50.dp)
-                    .align(Alignment.TopCenter),
-                expanded,
-                defaultSelectedCountry = countryList(LocalContext.current).single { it.code == "IN" },
-                selectedCountry
-            ) {
-                expanded = !expanded
-            }
-
         }
-
+    ) {
+        CountryTextField(
+            sheetState = modalBottomSheetState,
+            label = stringResource(R.string.select_country_text),
+            modifier = Modifier
+                .padding(top = 50.dp)
+                .align(Alignment.TopCenter),
+            selectedCountry = selectedCountry,
+            defaultCountry = countryList(LocalContext.current).firstOrNull { it.code == "IN" }
+        )
     }
+  }
 ```
 
 # Demo

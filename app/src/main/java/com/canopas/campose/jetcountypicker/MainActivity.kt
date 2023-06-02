@@ -6,9 +6,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -43,45 +45,41 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SampleCountryPicker() {
     Box {
-        var expanded by remember { mutableStateOf(false) }
         var selectedCountry by remember { mutableStateOf<Country?>(null) }
-        val focusManager = LocalFocusManager.current
+        val modalBottomSheetState = rememberModalBottomSheetState(
+            initialValue = ModalBottomSheetValue.Hidden
+        )
 
         CountryPickerBottomSheet(
-            title = {
+            sheetState = modalBottomSheetState,
+            bottomSheetTitle = {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    text = stringResource(R.string.select_country_text), textAlign = TextAlign.Center,
+                    text = stringResource(R.string.select_country_text),
+                    textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp
                 )
             },
-            expanded,
-            onDismissRequest = {
-                expanded = false
-            },
             onItemSelected = {
                 selectedCountry = it
-                expanded = false
-                focusManager.clearFocus()
             }
         ) {
             CountryTextField(
+                sheetState = modalBottomSheetState,
                 label = stringResource(R.string.select_country_text),
                 modifier = Modifier
                     .padding(top = 50.dp)
                     .align(Alignment.TopCenter),
-                expanded = expanded,
                 selectedCountry = selectedCountry,
-                defaultSelectedCountry = countryList(LocalContext.current).single { it.code == "IN" }
-            ) {
-                expanded = !expanded
-            }
+                defaultCountry = countryList(LocalContext.current).firstOrNull { it.code == "IN" }
+            )
         }
     }
 }
