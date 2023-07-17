@@ -24,6 +24,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import com.canopas.campose.countrypicker.model.Country
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -39,6 +41,7 @@ fun CountryTextField(
     selectedCountry: Country? = null,
     defaultCountry: Country? = null,
     colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(),
+    customFontFamily: FontFamily = FontFamily.Default
 ) {
 
     val context = LocalContext.current
@@ -49,28 +52,24 @@ fun CountryTextField(
     val scope = rememberCoroutineScope()
     val countryValue = "${defaultSelectedCountry.dial_code} ${defaultSelectedCountry.name}"
 
-    OutlinedTextField(
-        modifier = modifier
-            .expandable(onExpandedChange = {
-                scope.launch { sheetState.show() }
-            }),
+    OutlinedTextField(modifier = modifier.expandable(onExpandedChange = {
+            scope.launch { sheetState.show() }
+        }),
         readOnly = true,
         isError = isError,
-        label = { Text(label) },
+        label = { Text(label, fontFamily = customFontFamily) },
         value = if (selectedCountry == null) countryValue else "${selectedCountry.dial_code} ${selectedCountry.name}",
         onValueChange = {},
         colors = colors,
         shape = shape,
+        textStyle = TextStyle(
+            fontFamily = customFontFamily
+        ),
         trailingIcon = {
-            Icon(
-                Icons.Filled.ArrowDropDown,
-                null,
-                Modifier.graphicsLayer {
-                    rotationZ = if (sheetState.isVisible) 180f else 0f
-                }
-            )
-        }
-    )
+            Icon(Icons.Filled.ArrowDropDown, null, Modifier.graphicsLayer {
+                rotationZ = if (sheetState.isVisible) 180f else 0f
+            })
+        })
 }
 
 fun Modifier.expandable(
@@ -82,9 +81,7 @@ fun Modifier.expandable(
                 var event: PointerEvent
                 do {
                     event = awaitPointerEvent(PointerEventPass.Initial)
-                } while (
-                    !event.changes.all { it.changedToUp() }
-                )
+                } while (!event.changes.all { it.changedToUp() })
                 onExpandedChange.invoke()
             }
         }

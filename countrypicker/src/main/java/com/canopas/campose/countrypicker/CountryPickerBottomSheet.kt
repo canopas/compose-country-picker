@@ -13,6 +13,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.canopas.campose.countrypicker.model.Country
 import kotlinx.coroutines.launch
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun CountryPickerBottomSheet(
     sheetState: ModalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden),
+    customFontFamily: FontFamily = FontFamily.Default,
     bottomSheetTitle: @Composable () -> Unit,
     onItemSelected: (country: Country) -> Unit,
     content: @Composable () -> Unit
@@ -28,22 +30,20 @@ fun CountryPickerBottomSheet(
     var searchValue by rememberSaveable { mutableStateOf("") }
     val scope = rememberCoroutineScope()
 
-    ModalBottomSheetLayout(
-        sheetState = sheetState,
+    ModalBottomSheetLayout(sheetState = sheetState,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         sheetContent = {
             bottomSheetTitle()
 
-            CountrySearchView(searchValue) {
+            CountrySearchView(searchValue, customFontFamily) {
                 searchValue = it
             }
 
-            Countries(searchValue) {
+            Countries(searchValue, customFontFamily) {
                 scope.launch { sheetState.hide() }
                 onItemSelected(it)
             }
-        }
-    ) {
+        }) {
         content()
     }
 }
@@ -51,6 +51,7 @@ fun CountryPickerBottomSheet(
 @Composable
 fun Countries(
     searchValue: String,
+    customFontFamily: FontFamily = FontFamily.Default,
     onItemSelected: (country: Country) -> Unit
 ) {
     val context = LocalContext.current
@@ -70,23 +71,25 @@ fun Countries(
         items(countries) { country ->
             Row(modifier = Modifier
                 .clickable { onItemSelected(country) }
-                .padding(12.dp))
-            {
+                .padding(12.dp)) {
                 Text(text = localeToEmoji(country.code))
                 Text(
                     text = country.name,
                     modifier = Modifier
                         .padding(start = 8.dp)
-                        .weight(2f)
+                        .weight(2f),
+                    fontFamily = customFontFamily,
+                    color = Color.Black.copy(alpha = 0.7F)
                 )
                 Text(
                     text = country.dial_code,
-                    modifier = Modifier
-                        .padding(start = 8.dp)
+                    modifier = Modifier.padding(start = 8.dp),
+                    fontFamily = customFontFamily,
+                    color = Color.Black.copy(alpha = 0.7F)
                 )
             }
             Divider(
-                color = Color.LightGray, thickness = 0.5.dp
+                color = Color.LightGray, thickness = 0.5.dp,
             )
         }
     }
