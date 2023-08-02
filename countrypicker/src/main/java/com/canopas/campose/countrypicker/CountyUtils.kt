@@ -2,14 +2,21 @@ package com.canopas.campose.countrypicker
 
 import android.content.Context
 import com.canopas.campose.countrypicker.model.Country
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.io.IOException
 
 fun countryList(context: Context): MutableList<Country> {
+    val moshi =
+        Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+
+    val personListType = Types.newParameterizedType(List::class.java, Country::class.java)
+    val jsonAdapter: JsonAdapter<MutableList<Country>> = moshi.adapter(personListType)
+
     val jsonFileString = getJsonDataFromAsset(context, "Countries.json")
-    val type = object : TypeToken<List<Country>>() {}.type
-    return Gson().fromJson(jsonFileString, type)
+    return jsonAdapter.fromJson(jsonFileString) ?: mutableListOf()
 }
 
 fun localeToEmoji(countryCode: String): String {
