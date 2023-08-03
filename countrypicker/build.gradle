@@ -43,7 +43,6 @@ android {
         kotlinCompilerExtensionVersion compose_compiler_version
     }
 
-    namespace 'com.canopas.jetcountrypicker'
 }
 
 dependencies {
