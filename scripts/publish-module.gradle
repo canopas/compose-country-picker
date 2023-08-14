@@ -1,18 +1,12 @@
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
+
 task androidSourcesJar(type: Jar) {
     archiveClassifier.set('sources')
-    if (project.plugins.findPlugin("com.android.library")) {
-        from android.sourceSets.main.java.srcDirs
-    } else {
-        from sourceSets.main.java.srcDirs
-    }
+    from android.sourceSets.main.java.srcDirs
 }
 
-artifacts {
-    archives androidSourcesJar
-}
 group = PUBLISH_GROUP_ID
 version = PUBLISH_VERSION
 
@@ -25,15 +19,15 @@ afterEvaluate {
                 groupId PUBLISH_GROUP_ID
                 artifactId PUBLISH_ARTIFACT_ID
                 version PUBLISH_VERSION
-
-                /// Two artifacts, the `aar` (or `jar`) and the sources
-                if (project.plugins.findPlugin("com.android.library")) {
-                    from components.release
-                } else {
-                    artifact("$buildDir/libs/${project.getName()}-${version}.jar")
-                }
-
                 artifact androidSourcesJar
+                /// Two artifacts, the `aar` (or `jar`) and the sources
+                //  if (project.plugins.findPlugin("com.android.library")) {
+                from components.release
+                //  } else {
+                //      artifact("$buildDir/libs/${project.getName()}-${version}.jar")
+                //  }
+
+                //  artifact androidSourcesJar
 
                 // Mostly self-explanatory metadata
                 pom {
