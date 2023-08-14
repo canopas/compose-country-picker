@@ -43,7 +43,9 @@ android {
         kotlinCompilerExtensionVersion compose_compiler_version
     }
     namespace 'com.canopas.campose.countrypicker'
-
+    publishing {
+        singleVariant("release")
+    }
 }
 
 dependencies {
