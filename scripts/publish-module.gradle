@@ -4,19 +4,36 @@ apply plugin: 'signing'
 group = PUBLISH_GROUP_ID
 version = PUBLISH_VERSION
 
+tasks.register('androidSourcesJar', Jar) {
+    archiveClassifier.set('sources')
+    if (project.plugins.findPlugin("com.android.library")) {
+        from android.sourceSets.main.kotlin.srcDirs
+    } else {
+        from sourceSets.main.kotlin.srcDirs
+    }
+}
+
+artifacts {
+    archives androidSourcesJar
+}
+
 afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
-                // The coordinates of the library, being set from variables that
-                // we'll set up later
+                tasks.named("generateMetadataFileForReleasePublication").configure { dependsOn("androidSourcesJar") }
 
                 groupId PUBLISH_GROUP_ID
                 artifactId PUBLISH_ARTIFACT_ID
                 version PUBLISH_VERSION
 
-                from components.release
+                if (project.plugins.findPlugin("com.android.library")) {
+                    from components.release
+                } else {
+                    artifact("$buildDir/libs/${project.getName()}-${version}.jar")
+                }
 
+                artifact androidSourcesJar
                 // Mostly self-explanatory metadata
                 pom {
                     name = PUBLISH_ARTIFACT_ID
