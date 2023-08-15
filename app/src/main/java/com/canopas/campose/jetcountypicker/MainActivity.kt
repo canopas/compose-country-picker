@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -30,6 +29,7 @@ import com.canopas.campose.countrypicker.CountryPickerBottomSheet
 import com.canopas.campose.countrypicker.CountryTextField
 import com.canopas.campose.countrypicker.countryList
 import com.canopas.campose.countrypicker.model.Country
+import com.canopas.campose.countypickerdemo.R
 import com.canopas.campose.jetcountypicker.ui.theme.JetCountyPickerTheme
 
 class MainActivity : ComponentActivity() {
@@ -48,7 +48,6 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SampleCountryPicker() {
-    val scope = rememberCoroutineScope()
     var openBottomSheet by rememberSaveable { mutableStateOf(false) }
     var selectedCountry by remember { mutableStateOf<Country?>(null) }
 
