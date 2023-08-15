@@ -7,9 +7,9 @@ version = PUBLISH_VERSION
 tasks.register('androidSourcesJar', Jar) {
     archiveClassifier.set('sources')
     if (project.plugins.findPlugin("com.android.library")) {
-        from android.sourceSets.main.kotlin.srcDirs
+        from android.sourceSets.main.java.srcDirs
     } else {
-        from sourceSets.main.kotlin.srcDirs
+        from sourceSets.main.java.srcDirs
     }
 }
 
