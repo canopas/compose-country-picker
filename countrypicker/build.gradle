@@ -12,6 +12,7 @@ apply from: "${rootDir}/scripts/publish-module.gradle"
 
 android {
     compileSdk 33
+    namespace 'com.canopas.campose.countrypicker'
 
     defaultConfig {
         minSdk 21
@@ -42,9 +43,10 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion compose_compiler_version
     }
-    namespace 'com.canopas.campose.countrypicker'
     publishing {
-        singleVariant("release")
+        singleVariant("release") {
+            withSourcesJar()
+        }
     }
 }
 

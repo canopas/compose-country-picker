@@ -5,9 +5,10 @@ plugins {
 
 android {
     compileSdk 33
+    namespace 'com.canopas.campose.countypickerdemo'
 
     defaultConfig {
-        applicationId "com.canopas.campose.jetcountypicker"
+        applicationId "com.canopas.campose.countypickerdemo"
         minSdk 21
         targetSdk 33
         versionCode 1
@@ -47,7 +48,6 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion compose_compiler_version
     }
-    namespace 'com.canopas.campose.jetcountypicker'
 }
 
 dependencies {
