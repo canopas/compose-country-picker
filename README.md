@@ -10,46 +10,51 @@ Available on [Maven Central](https://repo1.maven.org/maven2/com/canopas/jetcount
   
 Add the dependency
 ```gradle
- implementation 'com.canopas.jetcountrypicker:jetcountrypicker:1.0.5'
+ implementation 'com.canopas.jetcountrypicker:jetcountrypicker:1.0.9'
 ```
 
 ## How to use ?
 
 ```kotlin
-  Box {
+    var openBottomSheet by rememberSaveable { mutableStateOf(false) }
     var selectedCountry by remember { mutableStateOf<Country?>(null) }
-    val modalBottomSheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden
-    )
-
-    CountryPickerBottomSheet(
-        sheetState = modalBottomSheetState,
-        bottomSheetTitle = {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                text = stringResource(R.string.select_country_text),
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
-            )
-        },
-        onItemSelected = {
-            selectedCountry = it
-        }
-    ) {
+    
+    Box {
         CountryTextField(
-            sheetState = modalBottomSheetState,
             label = stringResource(R.string.select_country_text),
             modifier = Modifier
-                .padding(top = 50.dp)
-                .align(Alignment.TopCenter),
+                .fillMaxWidth()
+                .padding(top = 50.dp, start = 40.dp, end = 40.dp),
             selectedCountry = selectedCountry,
-            defaultCountry = countryList(LocalContext.current).firstOrNull { it.code == "IN" }
+            defaultCountry = countryList(LocalContext.current).firstOrNull { it.code == "IN" },
+            onShowCountryPicker = {
+                openBottomSheet = true
+            }, isPickerVisible = openBottomSheet
         )
     }
-  }
+
+    if (openBottomSheet) {
+        CountryPickerBottomSheet(
+            bottomSheetTitle = {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    text = stringResource(R.string.select_country_text),
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
+            },
+            containerColor = Color.White,
+            onItemSelected = {
+                selectedCountry = it
+                openBottomSheet = false
+            }, onDismissRequest = {
+                openBottomSheet = false
+            }
+        )
+    }
 ```
 
 # Demo

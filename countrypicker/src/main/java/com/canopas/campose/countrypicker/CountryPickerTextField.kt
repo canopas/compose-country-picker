@@ -1,19 +1,17 @@
 package com.canopas.campose.countrypicker
 
-import androidx.compose.foundation.gestures.forEachGesture
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldColors
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
@@ -25,20 +23,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
 import com.canopas.campose.countrypicker.model.Country
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CountryTextField(
-    sheetState: ModalBottomSheetState,
     label: String = "",
     isError: Boolean = false,
     modifier: Modifier,
     shape: Shape = MaterialTheme.shapes.small,
     selectedCountry: Country? = null,
     defaultCountry: Country? = null,
-    colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(),
+    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(
+    ),
+    isPickerVisible: Boolean = false,
+    onShowCountryPicker: () -> Unit
 ) {
 
     val context = LocalContext.current
@@ -46,13 +44,13 @@ fun CountryTextField(
         defaultCountry ?: countryList(context).first()
     }
 
-    val scope = rememberCoroutineScope()
+
     val countryValue = "${defaultSelectedCountry.dial_code} ${defaultSelectedCountry.name}"
 
     OutlinedTextField(
         modifier = modifier
             .expandable(onExpandedChange = {
-                scope.launch { sheetState.show() }
+                onShowCountryPicker()
             }),
         readOnly = true,
         isError = isError,
@@ -66,7 +64,7 @@ fun CountryTextField(
                 Icons.Filled.ArrowDropDown,
                 null,
                 Modifier.graphicsLayer {
-                    rotationZ = if (sheetState.isVisible) 180f else 0f
+                    rotationZ = if (isPickerVisible) 180f else 0f
                 }
             )
         }
@@ -76,18 +74,14 @@ fun CountryTextField(
 fun Modifier.expandable(
     onExpandedChange: () -> Unit
 ) = pointerInput(Unit) {
-    forEachGesture {
-        coroutineScope {
-            awaitPointerEventScope {
-                var event: PointerEvent
-                do {
-                    event = awaitPointerEvent(PointerEventPass.Initial)
-                } while (
-                    !event.changes.all { it.changedToUp() }
-                )
-                onExpandedChange.invoke()
-            }
-        }
+    awaitEachGesture {
+        var event: PointerEvent
+        do {
+            event = awaitPointerEvent(PointerEventPass.Initial)
+        } while (
+            !event.changes.all { it.changedToUp() }
+        )
+        onExpandedChange.invoke()
     }
 }.semantics {
     onClick {
