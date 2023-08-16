@@ -51,7 +51,6 @@ fun SampleCountryPicker() {
     var openBottomSheet by rememberSaveable { mutableStateOf(false) }
     var selectedCountry by remember { mutableStateOf<Country?>(null) }
 
-
     Box {
         CountryTextField(
             label = stringResource(R.string.select_country_text),
