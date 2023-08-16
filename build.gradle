@@ -2,7 +2,7 @@
 buildscript {
     ext {
         compose_compiler_version = "1.5.0"
-        compose_bom_version = "2023.08.00"
+        compose_bom_version = "2023.06.01"
     }
 }
 plugins {
@@ -13,6 +13,6 @@ plugins {
 }
 apply from: "${rootDir}/scripts/publish-root.gradle"
 
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }
