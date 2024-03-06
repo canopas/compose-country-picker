@@ -22,9 +22,24 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
 import com.canopas.campose.countrypicker.model.Country
 
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * Composable for displaying a text field with a country picker.
+ *
+ * @param label The label for the text field.
+ * @param isError Whether the text field should display an error state.
+ * @param modifier The modifier for the text field.
+ * @param shape The shape of the text field.
+ * @param selectedCountry The currently selected country.
+ * @param defaultCountry The default country to display if none is selected.
+ * @param colors The colors for the text field.
+ * @param textStyle The text style for the text field.
+ * @param labelTextStyle The text style for the label.
+ * @param isPickerVisible Whether the country picker bottom sheet is visible.
+ * @param onShowCountryPicker Callback when the country picker is shown.
+ */
 @Composable
 fun CountryTextField(
     label: String = "",
@@ -33,8 +48,9 @@ fun CountryTextField(
     shape: Shape = MaterialTheme.shapes.small,
     selectedCountry: Country? = null,
     defaultCountry: Country? = null,
-    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(
-    ),
+    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
+    textStyle: TextStyle = TextStyle(),
+    labelTextStyle: TextStyle = TextStyle(),
     isPickerVisible: Boolean = false,
     onShowCountryPicker: () -> Unit
 ) {
@@ -43,7 +59,6 @@ fun CountryTextField(
     val defaultSelectedCountry = remember {
         defaultCountry ?: countryList(context).first()
     }
-
 
     val countryValue = "${defaultSelectedCountry.dial_code} ${defaultSelectedCountry.name}"
 
@@ -54,7 +69,8 @@ fun CountryTextField(
             }),
         readOnly = true,
         isError = isError,
-        label = { Text(label) },
+        textStyle = textStyle,
+        label = { Text(label, style = labelTextStyle) },
         value = if (selectedCountry == null) countryValue else "${selectedCountry.dial_code} ${selectedCountry.name}",
         onValueChange = {},
         colors = colors,
@@ -71,9 +87,14 @@ fun CountryTextField(
     )
 }
 
-fun Modifier.expandable(
+/**
+ * Modifier for making a composable expandable when clicked.
+ *
+ * @param onExpandedChange Callback when the expandable state changes.
+ */
+internal fun Modifier.expandable(
     onExpandedChange: () -> Unit
-) = pointerInput(Unit) {
+) = this.pointerInput(Unit) {
     awaitEachGesture {
         var event: PointerEvent
         do {

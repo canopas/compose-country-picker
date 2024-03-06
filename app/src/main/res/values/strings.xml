@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">JetCountyPicker</string>
     <string name="select_country_text">Select country</string>
+    <string name="picker_type">Picker Type</string>
 </resources>
