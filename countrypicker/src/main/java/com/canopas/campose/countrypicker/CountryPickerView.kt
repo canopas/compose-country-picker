@@ -22,9 +22,12 @@ import com.canopas.campose.countrypicker.model.PickerType
  * @param sheetState The state of the bottom sheet.
  * @param shape The shape of the bottom sheet or dialog.
  * @param containerColor The color of the bottom sheet or dialog container.
- * @param contentColor The color of the bottom sheet or dialog content.
- * @param tonalElevation The elevation of the bottom sheet or dialog.
- * @param scrimColor The color of the bottom sheet or dialog scrim.
+ * @param contentColor The color of the bottom sheet items.
+ *  **[For bottom sheet only].**
+ * @param tonalElevation The elevation of the bottom sheet
+ * **[For bottom sheet only].**
+ * @param scrimColor Color of the scrim that obscures content when the bottom sheet is open.
+ * **[For bottom sheet only].**
  * @param pickerTitle The title composable for the bottom sheet or dialog.
  * @param onItemSelected Callback when a country is selected.
  * @param searchFieldTextStyle The text style for the search field.
