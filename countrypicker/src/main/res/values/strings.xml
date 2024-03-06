@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search_text">Search</string>
+    <string name="picker_type_dialog">Dialog</string>
+    <string name="picker_type_full_screen">Full Screen Dialog</string>
+    <string name="picker_type_bottom_sheet">Bottom Sheet</string>
 </resources>
