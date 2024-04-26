@@ -8,6 +8,12 @@ import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.io.IOException
 
+/**
+ * Retrieves a list of countries from a JSON file stored in the assets directory.
+ *
+ * @param context The context used to access the assets directory.
+ * @return A mutable list of countries parsed from the JSON file, or an empty list if parsing fails.
+ */
 fun countryList(context: Context): MutableList<Country> {
     val moshi =
         Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
@@ -16,16 +22,16 @@ fun countryList(context: Context): MutableList<Country> {
     val jsonAdapter: JsonAdapter<MutableList<Country>> = moshi.adapter(personListType)
 
     val jsonFileString = getJsonDataFromAsset(context, "Countries.json")
-    return jsonAdapter.fromJson(jsonFileString) ?: mutableListOf()
+    return jsonFileString?.let { jsonAdapter.fromJson(it) } ?: mutableListOf()
 }
 
-fun localeToEmoji(countryCode: String): String {
+internal fun localeToEmoji(countryCode: String): String {
     val firstLetter = Character.codePointAt(countryCode, 0) - 0x41 + 0x1F1E6
     val secondLetter = Character.codePointAt(countryCode, 1) - 0x41 + 0x1F1E6
     return String(Character.toChars(firstLetter)) + String(Character.toChars(secondLetter))
 }
 
-fun getJsonDataFromAsset(context: Context, fileName: String): String? {
+internal fun getJsonDataFromAsset(context: Context, fileName: String): String? {
     val jsonString: String
     try {
         jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
@@ -36,7 +42,7 @@ fun getJsonDataFromAsset(context: Context, fileName: String): String? {
     return jsonString
 }
 
-fun List<Country>.searchCountryList(countryName: String): MutableList<Country> {
+internal fun List<Country>.searchCountryList(countryName: String): MutableList<Country> {
     val countryList = mutableListOf<Country>()
     this.forEach {
         if (it.name.lowercase().contains(countryName.lowercase()) ||
