@@ -1,14 +1,18 @@
 package com.canopas.campose.countrypicker
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imeNestedScroll
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.BottomSheetDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -50,7 +54,7 @@ import kotlinx.coroutines.launch
  * @param countriesTextStyle The text style for the countries list.
  * @param onDismissRequest Callback when the bottom sheet is dismissed.
  */
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun CountryPickerBottomSheet(
     sheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false),
@@ -79,7 +83,8 @@ fun CountryPickerBottomSheet(
         containerColor = containerColor,
         contentColor = contentColor,
         tonalElevation = tonalElevation,
-        scrimColor = scrimColor
+        scrimColor = scrimColor,
+        modifier = Modifier.fillMaxSize().imePadding().imeNestedScroll()
     ) {
         bottomSheetTitle()
 
@@ -144,7 +149,7 @@ internal fun Countries(
                     style = textStyle
                 )
             }
-            Divider(color = Color.LightGray, thickness = 0.5.dp)
+            HorizontalDivider(thickness = 0.5.dp, color = Color.LightGray)
         }
     }
 }
