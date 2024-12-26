@@ -65,7 +65,7 @@ For bugs, questions and discussions please use the [Github Issues](https://githu
 
 # Credits
 
-JetCountryPicker is owned and maintained by the [Canopas team](https://canopas.com/). You can follow them on X at [@canopas_eng](https://x.com/canopas_eng) for project updates and releases.
+JetCountryPicker is owned and maintained by the [Canopas team](https://canopas.com/). You can follow them on X at [@canopassoftware](https://x.com/canopassoftware) for project updates and releases.
 
 # Licence
 
